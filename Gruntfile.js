@@ -110,7 +110,7 @@ module.exports = function(grunt) {
     if (grunt.option('prod')) {
       // add your production server task here
       // console.log('this is the prod option');
-      'shell: prodServer'
+      grunt.task.run([ 'shell' ]);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
