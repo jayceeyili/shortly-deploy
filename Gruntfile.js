@@ -28,6 +28,12 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      my_target: {
+        files: {
+          'public/dist/scripts.min.js': ['public/dist/scripts.js'],
+          'public/dist/vendor.min.js': ['public/dist/vendor.js']
+        }
+      }
     },
 
     eslint: {
