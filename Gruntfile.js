@@ -31,7 +31,6 @@ module.exports = function(grunt) {
       my_target: {
         files: {
           'public/dist/scripts.min.js': ['public/dist/scripts.js'],
-          'public/dist/vendor.min.js': ['public/dist/vendor.js']
         }
       }
     },
@@ -39,10 +38,19 @@ module.exports = function(grunt) {
     eslint: {
       target: [
         // Add list of files to lint here
+        'app/**/*.js',
+        'public/client/*.js',
+        'server.js',
+        'server-config.js'
       ]
     },
 
     cssmin: {
+      dist: {
+        files: {
+          'public/dist/style.min.css': ['public/style.css']
+        }
+      }
     },
 
     watch: {
@@ -64,6 +72,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+        command: 'git push live master'
       }
     },
   });
@@ -86,14 +95,22 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
+    'eslint',
     'mochaTest'
   ]);
 
-  grunt.registerTask('build', []);
+  grunt.registerTask('build', [
+    'test',
+    'concat',
+    'uglify',
+    'cssmin'
+  ]);
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
       // add your production server task here
+      // console.log('this is the prod option');
+      'shell: prodServer'
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
@@ -101,6 +118,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
+    'test',
+    'build',
+    'upload'
   ]);
 
 
